@@ -1,5 +1,6 @@
 from circleshape import *
-
+from constants import *
+import random
 
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius):
@@ -14,4 +15,17 @@ class Asteroid(CircleShape):
     def collides(self, other):
         return super().collides(other)
     
-    
+    def split(self):
+        self.kill()
+        if self.radius <= ASTEROID_MIN_RADIUS:
+            return
+        else:
+            ran = random.uniform(20, 50)
+            a1 = self.velocity.rotate(ran)
+            a2 = self.velocity.rotate(-ran)
+            newa1 = self.radius - ASTEROID_MIN_RADIUS
+            newa2 = self.radius - ASTEROID_MIN_RADIUS
+            as1 = Asteroid(self.position.x, self.position.y, newa1)
+            as2 = Asteroid(self.position.x, self.position.y, newa2)
+            as1.velocity = a1 * 1.2
+            as2.velocity = a2
